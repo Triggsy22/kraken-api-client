@@ -22,8 +22,10 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     Entities\ServerTime,
     Entities\SystemStatus,
     Entities\TradeBalance,
+    Entities\TradeVolume,
     Entities\WebsocketToken,
     Entities\WithdrawalInformation,
+    GetTradeVolumeResponse,
     GetWebSocketsTokenResponse,
     OpenOrdersResponse,
     OrderBookResponse,
@@ -225,6 +227,20 @@ final class Client implements Contracts\Client
         return (array)$this->request(
             'private/QueryOrders',
             QueryOrdersResponse::class,
+            $params
+        )->result;
+    }
+
+    /** @inheritDoc */
+    public function getTradeVolume(string $assetPair) : TradeVolume{
+
+        $params = [
+            'pair' => $assetPair
+        ];
+
+        return $this->request(
+            'private/TradeVolume',
+            GetTradeVolumeResponse::class,
             $params
         )->result;
     }

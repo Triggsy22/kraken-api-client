@@ -17,6 +17,7 @@ use Butschster\Kraken\Responses\Entities\SystemStatus;
 use Butschster\Kraken\Responses\Entities\TickerInformation;
 use Butschster\Kraken\Responses\Entities\TradableAsset;
 use Butschster\Kraken\Responses\Entities\TradeBalance;
+use Butschster\Kraken\Responses\Entities\TradeVolume;
 use Butschster\Kraken\Responses\Entities\WebsocketToken;
 use Butschster\Kraken\Responses\Entities\WithdrawalInformation;
 use Butschster\Kraken\ValueObjects\AssetClass;
@@ -129,6 +130,14 @@ interface Client
      * @return Order[]
      */
     public function queryOrdersInfo(array $txIds, bool $trades = false, ?int $userRef = null): array;
+
+    /**
+     * Retrieve information about the trade volume and the individual fee.
+     * @see https://docs.kraken.com/rest/#operation/getTradeVolume
+     * @param string $assetPair Asset pair to check, like: BTCUSD
+     * @return TradeVolume
+     */
+    public function getTradeVolume(string $assetPair) : TradeVolume;
 
     /**
      * Place a new order.

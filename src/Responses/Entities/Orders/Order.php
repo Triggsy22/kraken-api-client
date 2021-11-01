@@ -19,10 +19,10 @@ class Order
 
     /**
      * User reference id
-     * @Type("int")
+     * @Type("int|string|null")
      * @SerializedName("userref")
      */
-    public int $userRef = 0;
+    public mixed $userRef = 0;//info: in the api its on some requests an int and on some others a string... and i got an error message that its null.
 
     /**
      * Status of order
