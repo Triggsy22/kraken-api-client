@@ -12,6 +12,7 @@ use Butschster\Kraken\Responses\Entities\DepositMethods;
 use Butschster\Kraken\Responses\Entities\OrderBook\Orders;
 use Butschster\Kraken\Responses\Entities\Orders\ClosedOrders;
 use Butschster\Kraken\Responses\Entities\Orders\Order;
+use Butschster\Kraken\Responses\Entities\Trades\Trade;
 use Butschster\Kraken\Responses\Entities\ServerTime;
 use Butschster\Kraken\Responses\Entities\SystemStatus;
 use Butschster\Kraken\Responses\Entities\TickerInformation;
@@ -130,6 +131,15 @@ interface Client
      * @return Order[]
      */
     public function queryOrdersInfo(array $txIds, bool $trades = false, ?int $userRef = null): array;
+
+    /**
+     * Retrieve information about specific trades.
+     * @see https://docs.kraken.com/rest/#operation/getTradesInfo
+     * @param array $txIds List of transaction IDs to query info about (20 maximum)
+     * @param bool $trades Whether or not to include trades related to position in output
+     * @return Trade[]
+     */
+    public function queryTradesInfo(array $txIds, bool $trades = false) : array;
 
     /**
      * Retrieve information about the trade volume and the individual fee.

@@ -19,6 +19,7 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     Entities\CancelOrdersAfterTimeout,
     Entities\DepositMethods,
     Entities\Orders\ClosedOrders,
+    Entities\Trades\Trade,
     Entities\ServerTime,
     Entities\SystemStatus,
     Entities\TradeBalance,
@@ -30,6 +31,7 @@ use Butschster\Kraken\Responses\{AccountBalanceResponse,
     OpenOrdersResponse,
     OrderBookResponse,
     QueryOrdersResponse,
+    QueryTradesResponse,
     ServerTimeResponse,
     SystemStatusResponse,
     TickerInformationResponse,
@@ -232,6 +234,24 @@ final class Client implements Contracts\Client
     }
 
     /** @inheritDoc */
+    public function queryTradesInfo(array $txIds, bool $trades = false) : array
+    {
+        Assert::minCount($txIds, 1, 'Min 1 ID of transactions');
+        Assert::maxCount($txIds, 20, 'Max 20 IDs of transactions');
+
+        $params = [
+            'trades' => $trades,
+            'txid' => implode(',', $txIds)
+        ];
+
+        return (array)$this->request(
+            'private/QueryTrades',
+            QueryTradesResponse::class,
+            $params
+        )->result;
+    }
+
+    /** @inheritDoc */
     public function getTradeVolume(string $assetPair) : TradeVolume{
 
         $params = [
@@ -288,10 +308,10 @@ final class Client implements Contracts\Client
     public function getDepositMethods(string $asset): ?DepositMethods
     {
         return $this->request(
-            'private/DepositMethods',
-            DepositMethodsResponse::class,
-            ['asset' => $asset]
-        )->result[0] ?? null;
+                'private/DepositMethods',
+                DepositMethodsResponse::class,
+                ['asset' => $asset]
+            )->result[0] ?? null;
     }
 
     /** @inheritDoc */
